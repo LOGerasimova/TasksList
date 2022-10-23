@@ -4,14 +4,14 @@ namespace TasksList.Logger
 {
     public static class Log
     {
-        private static bool fileLogging = false;
+        private static bool _fileLogging = false;
 
         /// <summary>
         /// Включает/отключает логирование в файл
         /// </summary>
         public static void EnableLogging(bool fileLog)
         {
-            fileLogging = fileLog;
+            _fileLogging = fileLog;
         }
 
         /// <summary>
@@ -19,8 +19,8 @@ namespace TasksList.Logger
         /// </summary>
         public static void Debug(string message)
         {
-            if (fileLogging)
-                FileLogger.Instance.Debug(message);
+            if (_fileLogging)
+                FileLogger._instance.Debug(message);
         }
 
         /// <summary>
@@ -28,8 +28,8 @@ namespace TasksList.Logger
         /// </summary>
         public static void Trace(string message)
         {
-            if (fileLogging)
-                FileLogger.Instance.Trace(message);
+            if (_fileLogging)
+                FileLogger._instance.Trace(message);
         }
 
         /// <summary>
@@ -39,8 +39,8 @@ namespace TasksList.Logger
         {
             string formattedMessage = FormatLogMessage(message, memberName, sourceFilePath, sourceLineNumber);
 
-            if (fileLogging)
-                FileLogger.Instance.Error(formattedMessage);
+            if (_fileLogging)
+                FileLogger._instance.Error(formattedMessage);
         }
 
         /// <summary>
@@ -50,8 +50,8 @@ namespace TasksList.Logger
         {
             string formattedMessage = FormatLogMessage(message, memberName, sourceFilePath, sourceLineNumber);
 
-            if (fileLogging)
-                FileLogger.Instance.Fatal(formattedMessage);
+            if (_fileLogging)
+                FileLogger._instance.Fatal(formattedMessage);
         }
 
         /// <summary>
@@ -59,8 +59,8 @@ namespace TasksList.Logger
         /// </summary>
         public static void Info(string message)
         {
-            if (fileLogging)
-                FileLogger.Instance.Info(message);
+            if (_fileLogging)
+                FileLogger._instance.Info(message);
         }
 
         /// <summary>
@@ -68,8 +68,8 @@ namespace TasksList.Logger
         /// </summary>
         public static void Warn(string message)
         {
-            if (fileLogging)
-                FileLogger.Instance.Warn(message);
+            if (_fileLogging)
+                FileLogger._instance.Warn(message);
         }
 
         /// <summary>

@@ -31,11 +31,6 @@ namespace TasksList
             //включаем логирование
             Log.EnableLogging(true);
             Log.Info("Приложение запущено.");
-
-            double[] numbers1 = { 2.0, 2.1, 2.2, 2.3, 2.4, 2.5 };
-            double[] numbers2 = { 2.2 };
-
-            IEnumerable<double> onlyInFirstSet = numbers1.Except(numbers2);
         }
 
         private void TaskList_Load(object sender, EventArgs e)
@@ -196,8 +191,10 @@ namespace TasksList
                     {
                         if (Process.GetProcesses().Where(p => p.ProcessName == _processName && !string.IsNullOrEmpty(p.MainWindowTitle)).Count() == 0)
                         {
-                            _processInfo = new ObservableCollection<Process>();
+                            _processInfo = null;
                             dataGridView2.Rows.Clear();
+                            Thread.Sleep(4000);
+                            return;
                         }
 
                         //получаем все процессы
