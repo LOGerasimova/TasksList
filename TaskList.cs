@@ -267,10 +267,12 @@ namespace TasksList
         /// </summary>
         private void TaskList_FormClosed(object sender, FormClosedEventArgs e)
         {
-            //останавливаем работу процессов
+            //останавливаем работу процессов        
             _workingProcess = false;
+            Log.Info("Остановлено обновление таблицы процессов!");
             Stop();
 
+            System.Threading.Thread.Sleep(2000);
             Log.Info("Приложение закрыто.");
         }
 
