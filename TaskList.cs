@@ -13,16 +13,13 @@ namespace TasksList
 {
     public partial class TaskList : Form
     {
-        private ObservableCollection<Process> process = null;
-        private ObservableCollection<Process> processInfo = null;
-        //индексы выбранной стоки таблицы
-        private int indexProcess = 0;
-        private int indexProcessInfo = 0;
+        private ObservableCollection<Process> _process = null;
+        private ObservableCollection<Process> _processInfo = null;
         //имя выбранного процесса
-        private string processName = string.Empty;
+        private string _processName = string.Empty;
         //потоки обновления таблиц
-        private Thread InstanceCaller = null;
-        private Thread InstanceCallerInfo = null;
+        private Thread _instanceCaller = null;
+        private Thread _instanceCallerInfo = null;
         //состояния потока запущен или остановлен
         private bool _workingProcess = true;
         private bool _workingProcessInfo = false;
@@ -48,8 +45,8 @@ namespace TasksList
             CreateDataTableInfo();
 
             //запускаем поток обновления основной таблици рпоцессов
-            InstanceCaller = new Thread(new ThreadStart(LoadContent));
-            InstanceCaller.Start();
+            _instanceCaller = new Thread(new ThreadStart(LoadContent));
+            _instanceCaller.Start();
         }
 
         /// <summary>
@@ -82,24 +79,6 @@ namespace TasksList
         }
 
         /// <summary>
-        /// Функция выделения строки и прокрутка скролла
-        /// </summary>
-        /// <param name="dataGrid">Грид</param>
-        /// <param name="id">Индекс строки</param>
-        private void SelectedRowDataGridView(DataGridView dataGrid, int id)
-        {
-            if (id < dataGrid.RowCount)
-            {
-                //убираем выделение строки
-                dataGrid.ClearSelection();
-                //выделяем строку
-                dataGrid.Rows[id].Selected = true;
-                //перемещаем скрол на выбранный элемант
-                dataGrid.FirstDisplayedScrollingRowIndex = id;
-            }
-        }
-
-        /// <summary>
         /// Запуск потока обновления таблицы информации
         /// </summary>
         private void Start()
@@ -112,7 +91,7 @@ namespace TasksList
             }
 
             //создаём поток на обновление таблицы
-            InstanceCallerInfo = new Thread(new ThreadStart(LoadInfoContent));
+            _instanceCallerInfo = new Thread(new ThreadStart(LoadInfoContent));
 
             //состояние обновления таблицы информации процесса
             _workingProcessInfo = true;
@@ -120,7 +99,7 @@ namespace TasksList
             Log.Info("Запущено обновление таблицы!");
 
             //запускаем поток
-            InstanceCallerInfo.Start();
+            _instanceCallerInfo.Start();
         }
 
         /// <summary>
@@ -150,15 +129,16 @@ namespace TasksList
             {
                 try
                 {
-                    //получаем все процессы
-                    ObservableCollection<Process> processNew = new ObservableCollection<Process>(Process.GetProcesses().Where(p => !string.IsNullOrEmpty(p.MainWindowTitle)));
                     //заполняем dataGridView1
                     dataGridView1.Invoke((MethodInvoker)delegate
                     {
-                        if(process != null)
+                        //получаем все процессы
+                        ObservableCollection<Process> processNew = new ObservableCollection<Process>(Process.GetProcesses().Where(p => !string.IsNullOrEmpty(p.MainWindowTitle)));
+
+                        if (_process != null)
                         {
                             //удаляем остановленные процессы из списка
-                            foreach (var proces in process.Where(p => !processNew.Any(s => s.Id == p.Id)))
+                            foreach (var proces in _process.Where(p => !processNew.Any(s => s.Id == p.Id)))
                             {
                                 foreach (DataGridViewRow row in dataGridView1.Rows)
                                 {
@@ -171,23 +151,23 @@ namespace TasksList
                                 }
                             }
                             //добавляем новые запущенные процессы в список
-                            foreach (var proces in processNew.Where(p => !process.Any(s => s.Id == p.Id)))
+                            foreach (var proces in processNew.Where(p => !_process.Any(s => s.Id == p.Id)))
                             {
                                 dataGridView1.Rows.Add(proces.Id, proces.ProcessName);
                                 Log.Info($"Запущен новый процесс {proces.ProcessName}.");
                             }
-                            process.Clear();
+                            _process.Clear();
                             foreach (var proces in processNew.Where(p => !string.IsNullOrEmpty(p.MainWindowTitle)))
-                                process.Add(proces);
+                                _process.Add(proces);
                         }
                         else
                         {
                             //если таблица ещё не заполнена, то заполним таблицу данными на данный момент
-                            process = new ObservableCollection<Process>();
+                            _process = new ObservableCollection<Process>();
                             foreach (var proces in processNew.Where(p => !string.IsNullOrEmpty(p.MainWindowTitle)))
                             {
                                 dataGridView1.Rows.Add(proces.Id, proces.ProcessName);
-                                process.Add(proces);
+                                _process.Add(proces);
                             }
                         }
                     });
@@ -211,15 +191,22 @@ namespace TasksList
             {
                 try
                 {
-                    //получаем все процессы
-                    ObservableCollection<Process> processNew = new ObservableCollection<Process>(Process.GetProcesses().Where(p => p.ProcessName == processName));
                     //заполняем dataGridView2
                     dataGridView2.Invoke((MethodInvoker)delegate
                     {
-                        if (processInfo != null)
+                        if (Process.GetProcesses().Where(p => p.ProcessName == _processName && !string.IsNullOrEmpty(p.MainWindowTitle)).Count() == 0)
+                        {
+                            _processInfo = new ObservableCollection<Process>();
+                            dataGridView2.Rows.Clear();
+                        }
+
+                        //получаем все процессы
+                        ObservableCollection<Process> processNew = new ObservableCollection<Process>(Process.GetProcesses().Where(p => p.ProcessName == _processName));
+
+                        if (_processInfo != null)
                         {
                             //удаляем остановленные процессы из списка
-                            foreach (var proces in processInfo.Where(p => !processNew.Any(s => s.Id == p.Id)))
+                            foreach (var proces in _processInfo.Where(p => !processNew.Any(s => s.Id == p.Id)))
                             {
                                 foreach (DataGridViewRow row in dataGridView2.Rows)
                                 {
@@ -232,23 +219,23 @@ namespace TasksList
                                 }
                             }
                             //добавляем новые запущенные процессы в список
-                            foreach (var proces in processNew.Where(p => !processInfo.Any(s => s.Id == p.Id)))
+                            foreach (var proces in processNew.Where(p => !_processInfo.Any(s => s.Id == p.Id)))
                             {
                                 dataGridView2.Rows.Add(proces.Id, proces.ProcessName);
                                 Log.Info($"Запущен новый процесс {proces.Id} {proces.ProcessName}.");
                             }
-                            processInfo.Clear();
+                            _processInfo.Clear();
                             foreach (var proces in processNew)
-                                processInfo.Add(proces);
+                                _processInfo.Add(proces);
                         }
                         else
                         {
                             //если таблица ещё не заполнена, то заполним таблицу данными на данный момент
-                            processInfo = new ObservableCollection<Process>();
+                            _processInfo = new ObservableCollection<Process>();
                             foreach (var proces in processNew)
                             {
                                 dataGridView2.Rows.Add(proces.Id, proces.ProcessName);
-                                processInfo.Add(proces);
+                                _processInfo.Add(proces);
                             }
                         }
                     });
@@ -259,38 +246,6 @@ namespace TasksList
                 }
 
                 Thread.Sleep(4000);
-            }
-        }
-
-        /// <summary>
-        /// Событие выбора процесса на общей таблице
-        /// </summary>
-        private void dataGridView1_Click(object sender, EventArgs e)
-        {
-            //запоминаем выделенный индекс строки
-            try
-            {
-                indexProcess = dataGridView1.CurrentRow.Index;
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex.Message);
-            }
-        }
-
-        /// <summary>
-        /// Событие выбора процесса на таблице информации
-        /// </summary>
-        private void dataGridView2_Click(object sender, EventArgs e)
-        {
-            //запоминаем выделенный индекс строки
-            try
-            {
-                indexProcessInfo = dataGridView2.CurrentRow.Index;
-            }
-            catch(Exception ex)
-            {
-                Log.Error(ex.Message);
             }
         }
 
@@ -325,9 +280,9 @@ namespace TasksList
         private void dataGridView1_DoubleClick(object sender, EventArgs e)
         {
             //запоминаем название процесса
-            processName = dataGridView1.Rows[dataGridView1.CurrentRow.Index].Cells[1].Value.ToString();
+            _processName = dataGridView1.Rows[dataGridView1.CurrentRow.Index].Cells[1].Value.ToString();
 
-            Log.Info($"Запрошена информация о процесса {processName}");
+            Log.Info($"Запрошена информация о процесса {_processName}");
             Start();
         }
     }

@@ -12,3 +12,17 @@ D:\test\TasksList\obj\Debug\TasksList.pdb
 D:\test\TasksList\bin\Debug\NLog.dll
 D:\test\TasksList\bin\Debug\NLog.xml
 D:\test\TasksList\obj\Debug\TasksList.csproj.CopyComplete
+D:\test\TasksListGit\bin\Debug\TasksList.exe.config
+D:\test\TasksListGit\bin\Debug\TasksList.exe
+D:\test\TasksListGit\bin\Debug\TasksList.pdb
+D:\test\TasksListGit\bin\Debug\NLog.dll
+D:\test\TasksListGit\bin\Debug\NLog.xml
+D:\test\TasksListGit\obj\Debug\TasksList.csproj.AssemblyReference.cache
+D:\test\TasksListGit\obj\Debug\TasksList.csproj.SuggestedBindingRedirects.cache
+D:\test\TasksListGit\obj\Debug\TasksList.TaskList.resources
+D:\test\TasksListGit\obj\Debug\TasksList.Properties.Resources.resources
+D:\test\TasksListGit\obj\Debug\TasksList.csproj.GenerateResource.cache
+D:\test\TasksListGit\obj\Debug\TasksList.csproj.CoreCompileInputs.cache
+D:\test\TasksListGit\obj\Debug\TasksList.csproj.CopyComplete
+D:\test\TasksListGit\obj\Debug\TasksList.exe
+D:\test\TasksListGit\obj\Debug\TasksList.pdb
