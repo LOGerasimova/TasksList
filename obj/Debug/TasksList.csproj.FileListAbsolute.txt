@@ -1,0 +1,14 @@
+D:\test\TasksList\bin\Debug\TasksList.exe.config
+D:\test\TasksList\bin\Debug\TasksList.exe
+D:\test\TasksList\bin\Debug\TasksList.pdb
+D:\test\TasksList\obj\Debug\TasksList.csproj.AssemblyReference.cache
+D:\test\TasksList\obj\Debug\TasksList.csproj.SuggestedBindingRedirects.cache
+D:\test\TasksList\obj\Debug\TasksList.TaskList.resources
+D:\test\TasksList\obj\Debug\TasksList.Properties.Resources.resources
+D:\test\TasksList\obj\Debug\TasksList.csproj.GenerateResource.cache
+D:\test\TasksList\obj\Debug\TasksList.csproj.CoreCompileInputs.cache
+D:\test\TasksList\obj\Debug\TasksList.exe
+D:\test\TasksList\obj\Debug\TasksList.pdb
+D:\test\TasksList\bin\Debug\NLog.dll
+D:\test\TasksList\bin\Debug\NLog.xml
+D:\test\TasksList\obj\Debug\TasksList.csproj.CopyComplete
