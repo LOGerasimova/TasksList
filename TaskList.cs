@@ -35,11 +35,11 @@ namespace TasksList
 
         private void TaskList_Load(object sender, EventArgs e)
         {
-            //создаём таблицы dataGridVie
+            //создаём таблицы dataGridView
             CreateDataTable();
             CreateDataTableInfo();
 
-            //запускаем поток обновления основной таблици рпоцессов
+            //запускаем поток обновления основной таблицы процессов
             _instanceCaller = new Thread(new ThreadStart(LoadContent));
             _instanceCaller.Start();
         }
@@ -267,13 +267,9 @@ namespace TasksList
         /// </summary>
         private void TaskList_FormClosed(object sender, FormClosedEventArgs e)
         {
-            //останавливаем работу процессов        
-            _workingProcess = false;
-            Log.Info("Остановлено обновление таблицы процессов!");
-            Stop();
-
-            System.Threading.Thread.Sleep(2000);
+            //останавливаем работу процессов
             Log.Info("Приложение закрыто.");
+            Process.GetCurrentProcess().Kill();
         }
 
         private void dataGridView1_DoubleClick(object sender, EventArgs e)
