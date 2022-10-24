@@ -275,6 +275,9 @@ namespace TasksList
         {
             //запоминаем название процесса
             _processName = dataGridView1.Rows[dataGridView1.CurrentRow.Index].Cells[1].Value.ToString();
+            //очищаем таблицу информации
+            _processInfo = null;
+            dataGridView2.Rows.Clear();
 
             Log.Info($"Запрошена информация о процесса {_processName}");
             Start();
